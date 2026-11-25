@@ -1,0 +1,8 @@
+[
+ {"name":"КонсультантПлюс — специалисту по закупкам","kind":"СМИ / обзоры","type":"rss","url":"https://www.consultant.ru/rss/fks.xml","enabled":true,"procurement_only":true},
+ {"name":"КонсультантПлюс — законодательство","kind":"СМИ / обзоры","type":"rss","url":"https://www.consultant.ru/rss/fd.xml","enabled":true,"procurement_only":true},
+ {"name":"КонсультантПлюс — законопроекты","kind":"СМИ / обзоры","type":"rss","url":"https://www.consultant.ru/rss/zw.xml","enabled":true,"procurement_only":true},
+ {"name":"ГИС ЕИС ЗАКУПКИ — Telegram","kind":"Ведомственные сообщения / соцсети","type":"telegram","url":"https://t.me/s/gis_eiszakupki","enabled":true,"procurement_only":true},
+ {"name":"Минфин России — Telegram","kind":"Ведомственные сообщения / соцсети","type":"telegram","url":"https://t.me/s/minfin","enabled":true,"procurement_only":true},
+ {"name":"ГАРАНТ — госзакупки (настройка селектора)","kind":"СМИ / обзоры","type":"html","url":"https://www.garant.ru/ia/aggregator/goszakupki/","selector":"article h2 a","enabled":false,"procurement_only":true}
+]
