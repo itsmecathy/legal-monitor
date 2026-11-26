@@ -151,7 +151,8 @@ def run(config,output):
     for s in sources:
         if not s.get('enabled'): continue
         try:
-  records = collect_history(s) success += 1
+            records = collect_history(s)
+            success += 1
             for i in records:
                 if i['id'] in items: i['first_seen']=items[i['id']]['first_seen']
                 items[i['id']]=i
