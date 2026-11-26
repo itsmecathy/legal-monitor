@@ -10,6 +10,9 @@ from email.utils import parsedate_to_datetime
 from bs4 import BeautifulSoup
 ROOT = Path(__file__).resolve().parent
 AGENT = 'LegalMonitor/1.0'
+HISTORY_DAYS = 60
+MAX_PAGES = 100
+MAX_ITEMS = 50000
 
 def now(): return datetime.now(timezone.utc).isoformat()
 def clean(s): return ' '.join(BeautifulSoup(s or '', 'html.parser').get_text(' ', strip=True).split())
@@ -72,20 +75,91 @@ def parse(source, raw):
         out.append(dict(laws=laws,topics=topics,news_type=news_type,id=hashlib.sha256(url.encode()).hexdigest()[:24],title=title[:300],url=url,published=date,first_seen=now(),source=source['name'],kind=source['kind'],category=source.get('category') or category(text),status='Не проверен'))
     return out
 
+
+def collect_history(source):
+    cutoff = datetime.now(timezone.utc) - timedelta(
+        days=HISTORY_DAYS
+    )
+
+    records = {}
+    url = source["url"]
+
+    for page in range(MAX_PAGES):
+        raw = fetch(url, source["type"] != "rss")
+
+        for item in parse(source, raw):
+            published = item.get("published")
+
+            if published:
+                try:
+                    dt = datetime.fromisoformat(
+                        published.replace("Z", "+00:00")
+                    )
+                    if dt < cutoff:
+                        continue
+                except ValueError:
+                    pass
+
+            records[item["id"]] = item
+
+        if source["type"] != "telegram":
+            break
+
+        soup = BeautifulSoup(raw, "html.parser")
+
+        posts = soup.select("[data-post]")
+        ids = []
+        dates = []
+
+        for post in posts:
+            post_id = post.get("data-post", "").split("/")[-1]
+
+            if post_id.isdigit():
+                ids.append(int(post_id))
+
+            t = post.select_one("time")
+            if t and t.get("datetime"):
+                try:
+                    dates.append(datetime.fromisoformat(
+                        t["datetime"].replace("Z", "+00:00")
+                    ))
+                except ValueError:
+                    pass
+
+        if not ids:
+            break
+
+        if dates and min(dates) <= cutoff:
+            break
+
+        next_url = source["url"] + "?before=" + str(min(ids))
+
+        if next_url == url:
+            break
+
+        url = next_url
+
+        import time
+        time.sleep(2)
+
+    return list(records.values())
+
+
 def run(config,output):
     sources=json.loads(config.read_text(encoding='utf-8')); old=json.loads(output.read_text(encoding='utf-8')) if output.exists() else {'items':[]}
     items={i['id']:i for i in old['items'] if i.get('laws') or not any(s.get('procurement_only') for s in sources)}; report=[]; success=0
     for s in sources:
         if not s.get('enabled'): continue
         try:
-            records=parse(s,fetch(s['url'],s['type']!='rss')); success+=1
+            records = collect_history(s)
+success += 1
             for i in records:
                 if i['id'] in items: i['first_seen']=items[i['id']]['first_seen']
                 items[i['id']]=i
             report.append({'source':s['name'],'ok':True,'count':len(records)})
         except Exception as e:
             report.append({'source':s['name'],'ok':False,'error':type(e).__name__}); print(s['name'],type(e).__name__,str(e)[:200])
-    data={'updated':now(),'sources':report,'items':sorted(items.values(),key=lambda i:i['published'] or i['first_seen'],reverse=True)[:10000]}
+    data={'updated':now(),'sources':report,'items':sorted(items.values(),key=lambda i:i['published'] or i['first_seen'],reverse=True)[:MAX_ITEMS]}
     output.parent.mkdir(parents=True,exist_ok=True); tmp=output.with_suffix('.tmp'); tmp.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8'); tmp.replace(output)
     print(f'{success}/{len(report)} источников; {len(data["items"])} записей')
     return 0 if success else 1
