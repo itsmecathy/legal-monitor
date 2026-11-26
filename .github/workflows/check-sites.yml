@@ -1,0 +1,36 @@
+
+name: Check government websites
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check websites
+        run: |
+          for url in \
+            "https://fas.gov.ru/" \
+            "https://minfin.gov.ru/" \
+            "https://roskazna.gov.ru/" \
+            "https://ach.gov.ru/" \
+            "https://minpromtorg.gov.ru/" \
+            "https://roszdravnadzor.gov.ru/" \
+            "https://pravo.gov.ru/" \
+            "https://publication.pravo.gov.ru/api/rss?" \
+            "https://regulation.gov.ru/" \
+            "https://zakupki.gov.ru/" \
+            "https://zakupki.gov.ru/epz/main/public/news/news-search.html" \
+            "https://max.ru/gis_eiszakupki"
+          do
+            echo "=============================="
+            echo "Checking: $url"
+            curl -L -sS \
+              --connect-timeout 15 \
+              --max-time 30 \
+              -o /dev/null \
+              -w "HTTP: %{http_code}\nTime: %{time_total}s\n" \
+              "$url" || echo "Connection failed"
+          done
