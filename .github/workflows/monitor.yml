@@ -14,7 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pages: read
+      pages: write
+      id-token: write
     outputs:
       result: ${{ steps.collect.outputs.result }}
     steps:
