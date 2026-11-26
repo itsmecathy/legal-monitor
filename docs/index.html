@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Мониторинг госзакупок</title>
   <link rel="stylesheet" href="style.css">
-  <script defer src="app.js?v=5"></script>
+  <script defer src="app.js?v=6"></script>
 </head>
 <body>
 
@@ -23,6 +23,16 @@
   <p id="status" role="status">Загрузка…</p>
 
   <section class="filters">
+
+<label>Платформа
+  <select id="platform">
+    <option value="">Все платформы</option>
+    <option value="telegram">Telegram</option>
+    <option value="max">MAX</option>
+    <option value="vk">ВКонтакте</option>
+    <option value="web">Сайты и RSS</option>
+  </select>
+</label>
 
     <label>Дата с
       <input type="date" id="dateFrom">
