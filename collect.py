@@ -389,6 +389,114 @@ def parse(source, raw):
                 ""
             ))
 
+    elif typ == "max":
+        soup = BeautifulSoup(raw, "html.parser")
+        channel = urlsplit(base).path.strip("/")
+        posts = {}
+
+        for a in soup.select("a[href]"):
+            link = urljoin(base, a["href"])
+            p = urlsplit(link)
+
+            if p.netloc == "max.ru" and re.fullmatch(
+                r"/" + re.escape(channel) + r"/[^/]+/?",
+                p.path
+            ):
+                link = canonical(link)
+                posts[link] = a.get_text(" ", strip=True)
+
+        print(
+            f"MAX: найдено публикаций: {len(posts)}",
+            flush=True
+        )
+
+        for link, preview in list(posts.items())[:30]:
+            try:
+                time.sleep(2)
+
+                page = BeautifulSoup(
+                    fetch(link, True),
+                    "html.parser"
+                )
+
+                for tag in page.select(
+                    "script, style, noscript"
+                ):
+                    tag.decompose()
+
+                date_tag = page.select_one("time")
+
+                if not date_tag:
+                    continue
+
+                date = parse_date(
+                    date_tag.get("datetime")
+                )
+
+                date_text = date_tag.get_text(
+                    " ", strip=True
+                )
+
+                body = page.body or page
+
+                lines = body.get_text(
+                    "\n", strip=True
+                ).splitlines()
+
+                content = []
+                started = False
+
+                for line in lines:
+                    line = line.strip()
+
+                    if not started:
+                        if line == date_text:
+                            started = True
+                        continue
+
+                    if line.startswith((
+                        "Перейти к посту",
+                        "Другие публикации",
+                        "Следите за новостями",
+                        "Все публикации канала",
+                        "Если у вас установлено"
+                    )):
+                        break
+
+                    if line in (
+                        "Переслано из",
+                        "Открыть оригинал"
+                    ):
+                        continue
+
+                    content.append(line)
+
+                summary = " ".join(content).strip()
+
+                if not summary:
+                    continue
+
+                title = next(
+                    (
+                        line for line in content
+                        if len(line) >= 35
+                    ),
+                    preview
+                )
+
+                results.append((
+                    title[:300],
+                    link,
+                    date,
+                    summary
+                ))
+
+            except Exception as e:
+                print(
+                    f"MAX: {link}: {type(e).__name__}: {e}",
+                    flush=True
+                )
+
     elif typ == "telegram":
         soup = BeautifulSoup(raw, "html.parser")
 
