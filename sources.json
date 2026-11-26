@@ -1,166 +1,67 @@
 
-[
-  {
-    "name": "КонсультантПлюс — специалисту по закупкам",
-    "kind": "СМИ / обзоры",
-    "type": "rss",
-    "url": "https://www.consultant.ru/rss/fks.xml",
-    "enabled": true,
-    "procurement_only": true
-  },
-  {
-    "name": "КонсультантПлюс — законодательство",
-    "kind": "СМИ / обзоры",
-    "type": "rss",
-    "url": "https://www.consultant.ru/rss/fd.xml",
-    "enabled": true,
-    "procurement_only": true
-  },
-  {
-    "name": "КонсультантПлюс — законопроекты",
-    "kind": "СМИ / обзоры",
-    "type": "rss",
-    "url": "https://www.consultant.ru/rss/zw.xml",
-    "enabled": true,
-    "procurement_only": true
-  },
-  {
-    "name": "ГИС ЕИС ЗАКУПКИ — Telegram",
-    "kind": "Ведомственные сообщения / соцсети",
-    "type": "telegram",
-    "url": "https://t.me/s/gis_eiszakupki",
-    "enabled": true,
-    "procurement_only": true
-  },
-  {
-    "name": "Минфин России — Telegram",
-    "kind": "Ведомственные сообщения / соцсети",
-    "type": "telegram",
-    "url": "https://t.me/s/minfin",
-    "enabled": true,
-    "procurement_only": true
-  },
-  {
-    "name": "ФАС России — официальный сайт",
-    "kind": "Официальные источники",
-    "type": "html",
-    "url": "https://fas.gov.ru/",
-    "selector": "a[href*='/news/']",
-    "enabled": true,
-    "procurement_only": true
-  },
-  {
-    "name": "ФАС России — Telegram",
-    "kind": "Ведомственные сообщения / соцсети",
-    "type": "telegram",
-    "url": "https://t.me/s/fas_time",
-    "enabled": true,
-    "procurement_only": true
-  },
-  {
-    "name": "Минфин России — официальный сайт",
-    "kind": "Официальные источники",
-    "type": "html",
-    "url": "https://minfin.gov.ru/ru/press-center/",
-    "selector": "a[href*='id_']",
-    "enabled": true,
-    "procurement_only": true
-  },
-  {
-    "name": "Федеральное казначейство",
-    "kind": "Официальные источники",
-    "type": "html",
-    "url": "https://roskazna.gov.ru/",
-    "selector": "a[href*='/novosti/'], a[href*='/news/']",
-    "enabled": true,
-    "procurement_only": true
-  },
-  {
-    "name": "Счётная палата РФ",
-    "kind": "Официальные источники",
-    "type": "html",
-    "url": "https://ach.gov.ru/",
-    "selector": "a[href*='/news/']",
-    "enabled": true,
-    "procurement_only": true
-  },
-  {
-    "name": "Счётная палата РФ — Telegram",
-    "kind": "Ведомственные сообщения / соцсети",
-    "type": "telegram",
-    "url": "https://t.me/s/auditgov",
-    "enabled": true,
-    "procurement_only": true
-  },
-  {
-    "name": "Минпромторг России",
-    "kind": "Официальные источники",
-    "type": "html",
-    "url": "https://minpromtorg.gov.ru/press-centre/news/",
-    "selector": "a[href*='/press-centre/news/']",
-    "enabled": true,
-    "procurement_only": true
-  },
-  
-{
-  "name": "Росздравнадзор — RSS",
-  "kind": "Официальные источники",
-  "type": "rss",
-  "url": "https://roszdravnadzor.gov.ru/rss",
-  "enabled": true,
-  "procurement_only": true
-},
-{
-  "name": "Росздравнадзор — новости",
-  "kind": "Официальные источники",
-  "type": "html",
-  "url": "https://roszdravnadzor.gov.ru/news",
-  "selector": "a[href*='/news/']",
-  "enabled": true,
-  "procurement_only": true
-}
 ,
   {
-    "name": "Официальное опубликование правовых актов",
-    "kind": "Нормативные правовые акты",
-    "type": "rss",
-    "url": "https://publication.pravo.gov.ru/api/rss?",
+    "name": "Закупки и тендеры — 44-ФЗ и 223-ФЗ",
+    "kind": "Отраслевые СМИ / обзоры",
+    "type": "telegram",
+    "url": "https://t.me/s/zakupki44fz",
     "enabled": true,
     "procurement_only": true
   },
   {
-    "name": "ЕИС — официальные новости",
-    "kind": "Официальные источники",
-    "type": "html",
-    "url": "https://zakupki.gov.ru/epz/main/public/news/news-search.html",
-    "selector": "a[href*='news/view'], a[href*='newsId=']",
+    "name": "Госзаказ",
+    "kind": "Отраслевые СМИ / обзоры",
+    "type": "telegram",
+    "url": "https://t.me/s/egoszakupkiru",
     "enabled": true,
     "procurement_only": true
   },
   {
-    "name": "Федеральный портал проектов НПА",
-    "kind": "Проекты нормативных актов",
-    "type": "html",
-    "url": "https://regulation.gov.ru/",
-    "selector": "a[href*='/projects/']",
-    "enabled": false,
+    "name": "ЭТП ЗаказРФ",
+    "kind": "Электронные торговые площадки",
+    "type": "telegram",
+    "url": "https://t.me/s/rusgoszakaz",
+    "enabled": true,
     "procurement_only": true
   },
   {
-    "name": "ГИС ЕИС ЗАКУПКИ — MAX",
-    "kind": "Ведомственные сообщения / соцсети",
-    "type": "max",
-    "url": "https://max.ru/gis_eiszakupki",
-    "enabled": false,
+    "name": "РТС-тендер",
+    "kind": "Электронные торговые площадки",
+    "type": "telegram",
+    "url": "https://t.me/s/rtstenderinfo",
+    "enabled": true,
     "procurement_only": true
   },
   {
-    "name": "ГАРАНТ — госзакупки",
-    "kind": "СМИ / обзоры",
-    "type": "html",
-    "url": "https://www.garant.ru/ia/aggregator/goszakupki/",
-    "selector": "article h2 a",
-    "enabled": false,
+    "name": "Росэлторг",
+    "kind": "Электронные торговые площадки",
+    "type": "telegram",
+    "url": "https://t.me/s/roseltorg_tg",
+    "enabled": true,
+    "procurement_only": true
+  },
+  {
+    "name": "Новости госзакупок",
+    "kind": "Отраслевые СМИ / обзоры",
+    "type": "telegram",
+    "url": "https://t.me/s/roszakupki",
+    "enabled": true,
+    "procurement_only": true
+  },
+  {
+    "name": "Контур тендеров",
+    "kind": "Экспертные ресурсы",
+    "type": "telegram",
+    "url": "https://t.me/s/tenderkod",
+    "enabled": true,
+    "procurement_only": true
+  },
+  {
+    "name": "ЭТП ТЭК-Торг",
+    "kind": "Электронные торговые площадки",
+    "type": "telegram",
+    "url": "https://t.me/s/etp_tektorg",
+    "enabled": true,
     "procurement_only": true
   }
 ]
