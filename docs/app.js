@@ -17,6 +17,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   function render() {
     const q = $("q").value.toLowerCase().trim();
 
+
+const from = document.getElementById("dateFrom").value;
+const to = document.getElementById("dateTo").value;
+
+const published = new Date(item.published);
+
+if (from || to) {
+  if (!item.published || isNaN(published.getTime())) {
+    return false;
+  }
+
+  if (from && published < new Date(from + "T00:00:00")) {
+    return false;
+  }
+
+  if (to && published > new Date(to + "T23:59:59.999")) {
+    return false;
+  }
+}
+
     const filtered = items.filter(item => {
       const text = JSON.stringify(item).toLowerCase();
 
@@ -69,6 +89,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       "./news.json?t=" + Date.now(),
       { cache: "no-store" }
     );
+    $("q").addEventListener("input", () => {
 
     if (!response.ok) {
       throw new Error("HTTP " + response.status);
