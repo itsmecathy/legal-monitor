@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T09:19:10.595201+00:00",
+  "updated": "2026-11-26T09:30:45.106373+00:00",
   "sources": [
     {
       "source": "КонсультантПлюс — специалисту по закупкам",
@@ -62,7 +62,12 @@
       "error": "ConnectTimeout"
     },
     {
-      "source": "Росздравнадзор",
+      "source": "Росздравнадзор — RSS",
+      "ok": false,
+      "error": "ReadTimeout"
+    },
+    {
+      "source": "Росздравнадзор — новости",
       "ok": false,
       "error": "ReadTimeout"
     },
