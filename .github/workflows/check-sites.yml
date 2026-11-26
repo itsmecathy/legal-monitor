@@ -9,36 +9,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Update certificates
+      - name: Check Treasury SSL
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ca-certificates
-          sudo update-ca-certificates
+          curl -4 -k -L -sS \
+            --connect-timeout 30 \
+            --max-time 60 \
+            -o /dev/null \
+            -w "Treasury HTTP: %{http_code}\n" \
+            "https://roskazna.gov.ru/" || true
 
-      - name: Advanced website check
+      - name: Check news and RSS
         run: |
           for url in \
-            "https://fas.gov.ru/" \
-            "https://minfin.gov.ru/" \
-            "https://roskazna.gov.ru/" \
-            "https://ach.gov.ru/" \
-            "https://minpromtorg.gov.ru/" \
-            "https://roszdravnadzor.gov.ru/" \
-            "https://publication.pravo.gov.ru/" \
+            "https://minfin.gov.ru/ru/press-center/" \
+            "https://roszdravnadzor.gov.ru/rss/" \
+            "https://roszdravnadzor.gov.ru/news" \
             "https://regulation.gov.ru/" \
-            "https://zakupki.gov.ru/epz/main/public/news/news-search.html"
+            "https://max.ru/gis_eiszakupki"
           do
-            echo "================================"
+            echo "============================"
             echo "Checking: $url"
 
             curl -4 -L -sS \
               --connect-timeout 30 \
               --max-time 60 \
               --retry 1 \
-              --retry-delay 5 \
               -A "LegalMonitor/1.0" \
-              -H "Accept-Language: ru-RU,ru;q=0.9" \
-              -o /dev/null \
-              -w "HTTP: %{http_code}\nIP: %{remote_ip}\nTime: %{time_total}s\n" \
-              "$url" || echo "Connection failed"
+              -o /tmp/response.txt \
+              -w "HTTP: %{http_code}\nType: %{content_type}\nSize: %{size_download}\n" \
+              "$url" && head -c 2000 /tmp/response.txt
+
+            echo ""
           done
+
