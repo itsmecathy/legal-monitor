@@ -11,27 +11,78 @@ document.addEventListener("DOMContentLoaded", async () => {
     kind: "kind"
   };
 
+  const platformNames = {
+    telegram: "Telegram",
+    max: "MAX",
+    vk: "ВКонтакте",
+    web: "Сайты и RSS"
+  };
+
   const values = (item, key) =>
     [item[key] || []].flat();
 
+  function getPlatform(item) {
+    try {
+      const host = new URL(item.url).hostname
+        .toLowerCase()
+        .replace(/^www\./, "");
+
+      if (["t.me", "telegram.me", "telegram.org"].includes(host)) {
+        return "telegram";
+      }
+
+      if (host === "max.ru" || host.endsWith(".max.ru")) {
+        return "max";
+      }
+
+      if (
+        host === "vk.com" ||
+        host.endsWith(".vk.com") ||
+        host === "vk.ru" ||
+        host.endsWith(".vk.ru") ||
+        host === "vkontakte.ru"
+      ) {
+        return "vk";
+      }
+    } catch (error) {}
+
+    return "web";
+  }
+
   function render() {
-    const q = ($("q")?.value || "").toLowerCase().trim();
+    const q = ($("q")?.value || "")
+      .toLowerCase().trim();
+
     const from = $("dateFrom")?.value || "";
     const to = $("dateTo")?.value || "";
+    const platform = $("platform")?.value || "";
 
     const filtered = items.filter(item => {
+      if (platform && getPlatform(item) !== platform) {
+        return false;
+      }
+
       const published = new Date(item.published);
 
       if (from || to) {
-        if (!item.published || isNaN(published.getTime())) {
+        if (
+          !item.published ||
+          isNaN(published.getTime())
+        ) {
           return false;
         }
 
-        if (from && published < new Date(from + "T00:00:00")) {
+        if (
+          from &&
+          published < new Date(from + "T00:00:00")
+        ) {
           return false;
         }
 
-        if (to && published > new Date(to + "T23:59:59.999")) {
+        if (
+          to &&
+          published > new Date(to + "T23:59:59.999")
+        ) {
           return false;
         }
       }
@@ -51,7 +102,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
 
     $("items").replaceChildren();
-    $("count").textContent = `Найдено: ${filtered.length}`;
+
+    $("count").textContent =
+      `Найдено: ${filtered.length}`;
 
     filtered.slice(0, limit).forEach(item => {
       const card = document.createElement("article");
@@ -71,10 +124,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       title.appendChild(link);
 
       const info = document.createElement("p");
+
       info.textContent = [
+        platformNames[getPlatform(item)],
         item.source,
         item.published
-          ? new Date(item.published).toLocaleDateString("ru-RU")
+          ? new Date(item.published)
+              .toLocaleDateString("ru-RU")
           : "",
         ...values(item, "laws"),
         item.news_type
@@ -86,7 +142,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (filtered.length === 0) {
       const message = document.createElement("p");
-      message.textContent = "За выбранный период новости не найдены.";
+
+      message.textContent =
+        "По выбранным фильтрам новости не найдены.";
+
       $("items").appendChild(message);
     }
 
@@ -111,10 +170,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const data = await response.json();
-    items = Array.isArray(data.items) ? data.items : [];
+
+    items = Array.isArray(data.items)
+      ? data.items
+      : [];
 
     Object.entries(filters).forEach(([id, key]) => {
       const select = $(id);
+
       if (!select) return;
 
       const unique = [...new Set(
@@ -122,7 +185,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       )].sort();
 
       unique.forEach(value => {
-        if (![...select.options].some(o => o.value === value)) {
+        if (
+          ![...select.options].some(
+            o => o.value === value
+          )
+        ) {
           select.add(new Option(value, value));
         }
       });
@@ -130,10 +197,35 @@ document.addEventListener("DOMContentLoaded", async () => {
       select.addEventListener("change", refresh);
     });
 
+    if ($("platform")) {
+      for (const option of $("platform").options) {
+        const count = option.value
+          ? items.filter(
+              item => getPlatform(item) === option.value
+            ).length
+          : items.length;
+
+        const name = option.value
+          ? platformNames[option.value]
+          : "Все платформы";
+
+        option.textContent = `${name} (${count})`;
+      }
+
+      $("platform").addEventListener(
+        "change", refresh
+      );
+    }
+
     $("q")?.addEventListener("input", refresh);
 
-    $("dateFrom")?.addEventListener("change", refresh);
-    $("dateTo")?.addEventListener("change", refresh);
+    $("dateFrom")?.addEventListener(
+      "change", refresh
+    );
+
+    $("dateTo")?.addEventListener(
+      "change", refresh
+    );
 
     $("resetDates")?.addEventListener("click", () => {
       if ($("dateFrom")) $("dateFrom").value = "";
@@ -152,7 +244,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         items.length +
         (data.updated
           ? ". Обновлено: " +
-            new Date(data.updated).toLocaleString("ru-RU")
+            new Date(data.updated)
+              .toLocaleString("ru-RU")
           : "");
     }
 
@@ -161,9 +254,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       (data.sources || []).forEach(source => {
         const li = document.createElement("li");
+
         li.textContent =
           (source.ok ? "✅ " : "❌ ") +
           source.source + ": " + source.count;
+
         $("health").appendChild(li);
       });
     }
