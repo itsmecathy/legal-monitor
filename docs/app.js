@@ -15,37 +15,40 @@ document.addEventListener("DOMContentLoaded", async () => {
     [item[key] || []].flat();
 
   function render() {
-    const q = $("q").value.toLowerCase().trim();
-
-
-const from = document.getElementById("dateFrom").value;
-const to = document.getElementById("dateTo").value;
-
-const published = new Date(item.published);
-
-if (from || to) {
-  if (!item.published || isNaN(published.getTime())) {
-    return false;
-  }
-
-  if (from && published < new Date(from + "T00:00:00")) {
-    return false;
-  }
-
-  if (to && published > new Date(to + "T23:59:59.999")) {
-    return false;
-  }
-}
+    const q = ($("q")?.value || "").toLowerCase().trim();
+    const from = $("dateFrom")?.value || "";
+    const to = $("dateTo")?.value || "";
 
     const filtered = items.filter(item => {
+      const published = new Date(item.published);
+
+      if (from || to) {
+        if (!item.published || isNaN(published.getTime())) {
+          return false;
+        }
+
+        if (from && published < new Date(from + "T00:00:00")) {
+          return false;
+        }
+
+        if (to && published > new Date(to + "T23:59:59.999")) {
+          return false;
+        }
+      }
+
       const text = JSON.stringify(item).toLowerCase();
 
       return text.includes(q) &&
         Object.entries(filters).every(([id, key]) =>
-          !$(id).value ||
+          !$(id)?.value ||
           values(item, key).includes($(id).value)
         );
     });
+
+    filtered.sort((a, b) =>
+      (Date.parse(b.published) || 0) -
+      (Date.parse(a.published) || 0)
+    );
 
     $("items").replaceChildren();
     $("count").textContent = `Найдено: ${filtered.length}`;
@@ -81,7 +84,20 @@ if (from || to) {
       $("items").appendChild(card);
     });
 
-    $("more").hidden = filtered.length <= limit;
+    if (filtered.length === 0) {
+      const message = document.createElement("p");
+      message.textContent = "За выбранный период новости не найдены.";
+      $("items").appendChild(message);
+    }
+
+    if ($("more")) {
+      $("more").hidden = filtered.length <= limit;
+    }
+  }
+
+  function refresh() {
+    limit = 20;
+    render();
   }
 
   try {
@@ -89,59 +105,77 @@ if (from || to) {
       "./news.json?t=" + Date.now(),
       { cache: "no-store" }
     );
-    $("q").addEventListener("input", () => {
 
     if (!response.ok) {
       throw new Error("HTTP " + response.status);
     }
 
     const data = await response.json();
-    items = data.items || [];
+    items = Array.isArray(data.items) ? data.items : [];
 
     Object.entries(filters).forEach(([id, key]) => {
+      const select = $(id);
+      if (!select) return;
+
       const unique = [...new Set(
         items.flatMap(item => values(item, key))
       )].sort();
 
       unique.forEach(value => {
-        if (![...$(id).options].some(o => o.value === value)) {
-          $(id).add(new Option(value, value));
+        if (![...select.options].some(o => o.value === value)) {
+          select.add(new Option(value, value));
         }
       });
 
-      $(id).addEventListener("change", () => {
-        limit = 20;
-        render();
-      });
+      select.addEventListener("change", refresh);
     });
 
-    $("q").addEventListener("input", () => {
-      limit = 20;
-      render();
+    $("q")?.addEventListener("input", refresh);
+
+    $("dateFrom")?.addEventListener("change", refresh);
+    $("dateTo")?.addEventListener("change", refresh);
+
+    $("resetDates")?.addEventListener("click", () => {
+      if ($("dateFrom")) $("dateFrom").value = "";
+      if ($("dateTo")) $("dateTo").value = "";
+      refresh();
     });
 
-    $("more").addEventListener("click", () => {
+    $("more")?.addEventListener("click", () => {
       limit += 20;
       render();
     });
 
-    $("status").textContent = "Новости загружены. Обновлено: " +
-      new Date(data.updated).toLocaleString("ru-RU");
+    if ($("status")) {
+      $("status").textContent =
+        "Новости загружены. Всего в базе: " +
+        items.length +
+        (data.updated
+          ? ". Обновлено: " +
+            new Date(data.updated).toLocaleString("ru-RU")
+          : "");
+    }
 
-    $("health").replaceChildren();
+    if ($("health")) {
+      $("health").replaceChildren();
 
-    (data.sources || []).forEach(source => {
-      const li = document.createElement("li");
-      li.textContent =
-        (source.ok ? "✅ " : "❌ ") +
-        source.source + ": " + source.count;
-      $("health").appendChild(li);
-    });
+      (data.sources || []).forEach(source => {
+        const li = document.createElement("li");
+        li.textContent =
+          (source.ok ? "✅ " : "❌ ") +
+          source.source + ": " + source.count;
+        $("health").appendChild(li);
+      });
+    }
 
     render();
 
   } catch (error) {
-    $("status").textContent =
-      "Ошибка загрузки новостей: " + error.message;
+    console.error(error);
+
+    if ($("status")) {
+      $("status").textContent =
+        "Ошибка загрузки новостей: " + error.message;
+    }
   }
 });
