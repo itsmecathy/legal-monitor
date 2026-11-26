@@ -101,14 +101,25 @@
     "enabled": true,
     "procurement_only": true
   },
-  {
-    "name": "Росздравнадзор",
-    "kind": "Официальные источники",
-    "type": "rss",
-    "url": "https://roszdravnadzor.gov.ru/rss/",
-    "enabled": true,
-    "procurement_only": true
-  },
+  
+{
+  "name": "Росздравнадзор — RSS",
+  "kind": "Официальные источники",
+  "type": "rss",
+  "url": "https://roszdravnadzor.gov.ru/rss",
+  "enabled": true,
+  "procurement_only": true
+},
+{
+  "name": "Росздравнадзор — новости",
+  "kind": "Официальные источники",
+  "type": "html",
+  "url": "https://roszdravnadzor.gov.ru/news",
+  "selector": "a[href*='/news/']",
+  "enabled": true,
+  "procurement_only": true
+}
+,
   {
     "name": "Официальное опубликование правовых актов",
     "kind": "Нормативные правовые акты",
