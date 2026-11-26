@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T09:52:17.050070+00:00",
+  "updated": "2026-11-26T10:26:06.844159+00:00",
   "sources": [
     {
       "source": "КонсультантПлюс — специалисту по закупкам",
@@ -9,7 +9,7 @@
     {
       "source": "КонсультантПлюс — законодательство",
       "ok": true,
-      "count": 0
+      "count": 1
     },
     {
       "source": "КонсультантПлюс — законопроекты",
@@ -31,7 +31,7 @@
       "ok": false,
       "count": 0,
       "error": "ConnectTimeout",
-      "details": "HTTPSConnectionPool(host='fas.gov.ru', port=443): Max retries exceeded with url: /robots.txt (Caused by ConnectTimeoutError(<HTTPSConnection(host='fas.gov.ru', port=443) at 0x713626c55310>, 'Connection to fas.gov.ru timed out. (connect timeout=30)'))"
+      "details": "HTTPSConnectionPool(host='fas.gov.ru', port=443): Max retries exceeded with url: /robots.txt (Caused by ConnectTimeoutError(<HTTPSConnection(host='fas.gov.ru', port=443) at 0x7cdf50785310>, 'Connection to fas.gov.ru timed out. (connect timeout=30)'))"
     },
     {
       "source": "ФАС России — Telegram",
@@ -55,7 +55,7 @@
       "ok": false,
       "count": 0,
       "error": "ConnectTimeout",
-      "details": "HTTPSConnectionPool(host='ach.gov.ru', port=443): Max retries exceeded with url: /robots.txt (Caused by ConnectTimeoutError(<HTTPSConnection(host='ach.gov.ru', port=443) at 0x713626078b90>, 'Connection to ach.gov.ru timed out. (connect timeout=30)'))"
+      "details": "HTTPSConnectionPool(host='ach.gov.ru', port=443): Max retries exceeded with url: /robots.txt (Caused by ConnectTimeoutError(<HTTPSConnection(host='ach.gov.ru', port=443) at 0x7cdf50a934d0>, 'Connection to ach.gov.ru timed out. (connect timeout=30)'))"
     },
     {
       "source": "Счётная палата РФ — Telegram",
@@ -67,7 +67,7 @@
       "ok": false,
       "count": 0,
       "error": "ConnectTimeout",
-      "details": "HTTPSConnectionPool(host='minpromtorg.gov.ru', port=443): Max retries exceeded with url: /robots.txt (Caused by ConnectTimeoutError(<HTTPSConnection(host='minpromtorg.gov.ru', port=443) at 0x713626ec17c0>, 'Connection to minpromtorg.gov.ru timed out. (connect timeout=30)'))"
+      "details": "HTTPSConnectionPool(host='minpromtorg.gov.ru', port=443): Max retries exceeded with url: /robots.txt (Caused by ConnectTimeoutError(<HTTPSConnection(host='minpromtorg.gov.ru', port=443) at 0x7cdf4fd5a330>, 'Connection to minpromtorg.gov.ru timed out. (connect timeout=30)'))"
     },
     {
       "source": "Росздравнадзор — RSS",
@@ -86,17 +86,35 @@
       "ok": false,
       "count": 0,
       "error": "ConnectTimeout",
-      "details": "HTTPSConnectionPool(host='publication.pravo.gov.ru', port=443): Max retries exceeded with url: /api/rss (Caused by ConnectTimeoutError(<HTTPSConnection(host='publication.pravo.gov.ru', port=443) at 0x7136271178f0>, 'Connection to publication.pravo.gov.ru timed out. (connect timeout=30)'))"
+      "details": "HTTPSConnectionPool(host='publication.pravo.gov.ru', port=443): Max retries exceeded with url: /api/rss (Caused by ConnectTimeoutError(<HTTPSConnection(host='publication.pravo.gov.ru', port=443) at 0x7cdf50bf90a0>, 'Connection to publication.pravo.gov.ru timed out. (connect timeout=30)'))"
     },
     {
       "source": "ЕИС — официальные новости",
       "ok": false,
       "count": 0,
       "error": "ConnectTimeout",
-      "details": "HTTPSConnectionPool(host='zakupki.gov.ru', port=443): Max retries exceeded with url: /robots.txt (Caused by ConnectTimeoutError(<HTTPSConnection(host='zakupki.gov.ru', port=443) at 0x713627100350>, 'Connection to zakupki.gov.ru timed out. (connect timeout=30)'))"
+      "details": "HTTPSConnectionPool(host='zakupki.gov.ru', port=443): Max retries exceeded with url: /robots.txt (Caused by ConnectTimeoutError(<HTTPSConnection(host='zakupki.gov.ru', port=443) at 0x7cdf50f3fd70>, 'Connection to zakupki.gov.ru timed out. (connect timeout=30)'))"
     }
   ],
   "items": [
+    {
+      "id": "e6fd64fbcbcd3adc22344b62",
+      "title": "\"Перечень поручений по итогам рабочей поездки во Владивосток\" (утв. Президентом РФ 24.11.2026)",
+      "url": "https://www.consultant.ru/law/review/209890370.html",
+      "published": "2026-11-26T09:00:00+00:00",
+      "first_seen": "2026-11-26T10:12:56.579474+00:00",
+      "source": "КонсультантПлюс — законодательство",
+      "kind": "СМИ / обзоры",
+      "laws": [
+        "Общие закупочные вопросы"
+      ],
+      "topics": [
+        "Требования и заявки"
+      ],
+      "news_type": "Судебная практика",
+      "category": "Госзакупки",
+      "status": "Не проверен"
+    },
     {
       "id": "44103e79ed9a22cff3593356",
       "title": "🆕 Версия 16.3 ГИС ЕИС ЗАКУПКИ станет доступна пользователям 5 октября 2026 года Ключевые новации: 🔹 новые возможности при проведении конкурентных процедур и зак",
