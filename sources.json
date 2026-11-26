@@ -8,6 +8,15 @@
     "enabled": true,
     "procurement_only": true
   },
+  
+{
+  "name": "ГИС ЕИС ЗАКУПКИ — MAX",
+  "kind": "Ведомственные сообщения / MAX",
+  "type": "max",
+  "url": "https://max.ru/gis_eiszakupki",
+  "enabled": true,
+  "procurement_only": true
+},
   {
     "name": "Госзаказ",
     "kind": "Отраслевые СМИ / обзоры",
